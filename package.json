@@ -1,0 +1,24 @@
+{
+  "name": "univers-hygiene-firebase",
+  "version": "1.0.0",
+  "description": "Gestionnaire d'inventaire et de services pour Univers Hygiène",
+  "main": "index.js",
+  "scripts": {
+    "start": "firebase serve",
+    "build": "echo 'Build step completed'",
+    "deploy": "firebase deploy",
+    "deploy:hosting": "firebase deploy --only hosting",
+    "deploy:firestore": "firebase deploy --only firestore"
+  },
+  "keywords": [
+    "firebase",
+    "hygiene",
+    "inventory",
+    "services"
+  ],
+  "author": "Univers Hygiène",
+  "license": "ISC",
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  }
+}
