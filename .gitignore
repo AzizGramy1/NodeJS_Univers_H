@@ -6,4 +6,3 @@ node_modules/
 firestore.rules
 firestore.indexes.json
 serviceAccountKey.json
-serviceAccountKey.json
