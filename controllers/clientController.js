@@ -50,3 +50,20 @@ exports.delete = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Mettre à jour les statistiques client après commande
+exports.updateStats = async (req, res) => {
+  try {
+    const { orderTotal } = req.body;
+    if (!orderTotal) {
+      return res.status(400).json({ success: false, message: 'Montant de la commande requis' });
+    }
+    const client = await Client.updateStats(req.params.id, orderTotal);
+    if (!client) {
+      return res.status(404).json({ success: false, message: 'Client non trouvé' });
+    }
+    res.json({ success: true, data: client });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
