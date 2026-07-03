@@ -1,32 +1,23 @@
 const { db } = require('../config/firebase');
-const COLLECTION = 'clients';
+const COLLECTION = 'serviceRequests';
 
 const create = async (data) => {
   const docRef = db.collection(COLLECTION).doc();
   const now = new Date();
-  await docRef.set({ ...data, createdAt: now, updatedAt: now });
-  return { id: docRef.id, ...data, createdAt: now, updatedAt: now };
+  await docRef.set({ ...data, date: now, createdAt: now, updatedAt: now });
+  return { id: docRef.id, ...data, date: now, createdAt: now, updatedAt: now };
 };
 
 const getAll = async (filters = {}) => {
   let query = db.collection(COLLECTION);
-  if (filters.type) query = query.where('type', '==', filters.type);
+  if (filters.status) query = query.where('status', '==', filters.status);
+  if (filters.priority) query = query.where('priority', '==', filters.priority);
+  if (filters.clientId) query = query.where('clientId', '==', filters.clientId);
+  query = query.orderBy('date', 'desc');
   const snapshot = await query.get();
-  const clients = [];
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    if (filters.search) {
-      const search = filters.search.toLowerCase();
-      if (data.name.toLowerCase().includes(search) ||
-          data.email.toLowerCase().includes(search) ||
-          data.phone.includes(search)) {
-        clients.push({ id: doc.id, ...data });
-      }
-    } else {
-      clients.push({ id: doc.id, ...data });
-    }
-  });
-  return clients;
+  const requests = [];
+  snapshot.forEach(doc => requests.push({ id: doc.id, ...doc.data() }));
+  return requests;
 };
 
 const getById = async (id) => {

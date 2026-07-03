@@ -1,24 +1,27 @@
 {
-  "name": "univers-hygiene-firebase",
+  "name": "univers-hygiene-backend",
   "version": "1.0.0",
-  "description": "Gestionnaire d'inventaire et de services pour Univers Hygiène",
-  "main": "index.js",
+  "description": "API REST pour Univers Hygiène - Gestion d'inventaire et services",
+  "main": "server.js",
   "scripts": {
-    "start": "firebase serve",
-    "build": "echo 'Build step completed'",
-    "deploy": "firebase deploy",
-    "deploy:hosting": "firebase deploy --only hosting",
-    "deploy:firestore": "firebase deploy --only firestore"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [
+    "express",
     "firebase",
-    "hygiene",
-    "inventory",
-    "services"
+    "firestore",
+    "hygiene"
   ],
   "author": "Univers Hygiène",
   "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "firebase-admin": "^11.11.1"
+  },
   "devDependencies": {
-    "firebase-tools": "^13.0.0"
+    "nodemon": "^3.1.14"
   }
 }
