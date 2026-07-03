@@ -5,3 +5,5 @@ node_modules/
 .DS_Store
 firestore.rules
 firestore.indexes.json
+serviceAccountKey.json
+serviceAccountKey.json
