@@ -1,3 +1,4 @@
+// models/Order.js
 const { db } = require('../config/firebase');
 const COLLECTION = 'orders';
 

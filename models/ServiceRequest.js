@@ -1,3 +1,4 @@
+// models/ServiceRequest.js
 const { db } = require('../config/firebase');
 const COLLECTION = 'serviceRequests';
 
@@ -9,15 +10,47 @@ const create = async (data) => {
 };
 
 const getAll = async (filters = {}) => {
-  let query = db.collection(COLLECTION);
-  if (filters.status) query = query.where('status', '==', filters.status);
-  if (filters.priority) query = query.where('priority', '==', filters.priority);
-  if (filters.clientId) query = query.where('clientId', '==', filters.clientId);
-  query = query.orderBy('date', 'desc');
-  const snapshot = await query.get();
-  const requests = [];
-  snapshot.forEach(doc => requests.push({ id: doc.id, ...doc.data() }));
-  return requests;
+  try {
+    let query = db.collection(COLLECTION);
+    
+    // Appliquer les filtres
+    if (filters.status && filters.status !== 'all') {
+      query = query.where('status', '==', filters.status);
+    }
+    if (filters.priority && filters.priority !== 'all') {
+      query = query.where('priority', '==', filters.priority);
+    }
+    if (filters.clientId) {
+      query = query.where('clientId', '==', filters.clientId);
+    }
+    
+    query = query.orderBy('date', 'desc');
+    const snapshot = await query.get();
+    const requests = [];
+    snapshot.forEach(doc => {
+      requests.push({ id: doc.id, ...doc.data() });
+    });
+    return requests;
+  } catch (error) {
+    console.error('Erreur getAll ServiceRequest:', error);
+    // Si l'index n'existe pas, faire une requête sans orderBy
+    let query = db.collection(COLLECTION);
+    if (filters.status && filters.status !== 'all') {
+      query = query.where('status', '==', filters.status);
+    }
+    if (filters.priority && filters.priority !== 'all') {
+      query = query.where('priority', '==', filters.priority);
+    }
+    if (filters.clientId) {
+      query = query.where('clientId', '==', filters.clientId);
+    }
+    const snapshot = await query.get();
+    const requests = [];
+    snapshot.forEach(doc => {
+      requests.push({ id: doc.id, ...doc.data() });
+    });
+    return requests;
+  }
 };
 
 const getById = async (id) => {
